@@ -3,13 +3,15 @@ import { faHashtag } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ObjectId } from "mongodb";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { AppLayout } from "../../components/appLayout";
+import PostsContext from "../../context/postsContext";
 import clientPromise from "../../lib/mongodb";
 import { getAppProps } from "../../utils/getAppProps";
 
 export default function Post(props) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const { deletePost } = useContext(PostsContext)
 
   const router = useRouter()
 
@@ -24,6 +26,7 @@ export default function Post(props) {
       })
       const json = await response.json()
       if(json.success) {
+        deletePost(props.id)
         router.replace(`/post/new`)
       }
     } catch (e) {
