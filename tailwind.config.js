@@ -10,8 +10,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        body: 'var(--font-sono)',
-        heading: 'var(--font-sono)'
+        body: 'var(--font-quicksand)',
+        heading: 'var(--font-quicksand)'
       }
     }
   },

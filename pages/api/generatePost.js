@@ -3,7 +3,7 @@ import { Configuration, OpenAIApi } from "openai"
 import clientPromise from "../../lib/mongodb"
 
 export default withApiAuthRequired (async function handler(req, res) {
-  const { user } = await getSession(req,res)
+  const { user } = await getSession(req, res)
   const client = await clientPromise
   const db = client.db("Blog")
   const userProfile = await db.collection("users").findOne({
@@ -21,6 +21,16 @@ export default withApiAuthRequired (async function handler(req, res) {
   const openai = new OpenAIApi(config)
 
   const { topic, keywords } = req.body
+
+  if(!topic || !keywords) {
+    res.status(422)
+    return
+  }
+
+  if(topic.length > 80 || keywords.length > 80){
+    res.status(422)
+    return
+  }
 
   const response = await openai.createCompletion({
     model:"text-davinci-003",
